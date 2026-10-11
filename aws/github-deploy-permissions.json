@@ -16,6 +16,15 @@
         "s3:DeleteObject"
       ],
       "Resource": "arn:aws:s3:::greatplateausacademy/*"
+    },
+    {
+      "Sid": "ClearCloudFrontCache",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:CreateInvalidation",
+        "cloudfront:GetInvalidation"
+      ],
+      "Resource": "arn:aws:cloudfront::148556619350:distribution/E3EFU7ADBY6M5I"
     }
   ]
 }

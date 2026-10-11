@@ -1,0 +1,319 @@
+/* Great Plateaus Academy — landing page
+   Brand colors: green #5A775F, gold #EBBB67, turquoise #8AD3DA, red #AD343E
+   Contrast ratios noted beside each color (WCAG AA: 4.5 text, 3 large/UI). */
+
+:root {
+  /* Brand colors, exactly as given */
+  --green: #5A775F;          /* buttons + newsletter band. White text on it 4.95 */
+  --gold: #EBBB67;           /* backgrounds only, with ink text 8.46 */
+  --turquoise: #8AD3DA;      /* backgrounds + decoration only, ink text 8.87 */
+  --red: #AD343E;            /* errors on light backgrounds 5.94 */
+
+  /* Darker shades of the brand colors, for text */
+  --green-dark: #3f5342;     /* headings, links, focus ring. 7.1–8.3 on light */
+  --gold-text: #8f6213;      /* gold-colored text. 4.56–5.35 on light */
+  --turquoise-text: #28767d; /* turquoise-colored text, if ever needed. 4.5+ */
+
+  /* Lighter tints for hovers and soft backgrounds */
+  --gold-hover: #f2cd8a;     /* ink text 9.92 */
+  --turquoise-tint: #d6f0f2; /* ink text 12.59 */
+
+  /* Neutrals */
+  --brown: #6b4f3a;          /* 7.06 on cream */
+  --beige: #f3ece0;
+  --beige-dark: #e6dbc8;
+  --cream: #fbf8f2;
+  --ink: #2a2622;
+  --muted: #6e655b;          /* 4.87–5.71 on light */
+  --focus: var(--green-dark);
+
+  --radius: 14px;
+  --shadow: 0 6px 24px rgba(42, 38, 34, 0.08);
+  --max: 1080px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: "Nunito Sans", system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--cream);
+}
+
+h1, h2, h3 {
+  font-family: "Fraunces", Georgia, serif;
+  line-height: 1.15;
+  color: var(--green-dark);
+  margin: 0 0 0.5em;
+}
+h1 { font-size: clamp(2rem, 5vw, 3.25rem); }
+h2 { font-size: clamp(1.6rem, 3.5vw, 2.25rem); }
+h3 { font-size: 1.3rem; }
+
+a { color: var(--green-dark); }
+
+img { max-width: 100%; display: block; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ---------- Accessibility basics ---------- */
+/* One clear focus ring for every link, button and field */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+/* On the green newsletter band, switch the ring to white (4.95) */
+.newsletter :focus-visible { outline-color: #fff; }
+main:focus { outline: none; } /* skip-link target, not interactive */
+
+.skip-link {
+  position: absolute;
+  left: 16px; top: -100px;
+  z-index: 100;
+  background: var(--green-dark); color: #fff;
+  padding: 10px 16px; border-radius: 8px;
+  font-weight: 700; text-decoration: none;
+}
+.skip-link:focus { top: 12px; }
+
+/* Respect people who turn off animations in their device settings */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+  .btn:hover { transform: none; }
+}
+
+/* ---------- Header ---------- */
+.site-header {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 18px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.brand {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+  color: var(--green-dark);
+}
+.brand-mark { width: 52px; height: 52px; fill: var(--green); flex-shrink: 0; }
+.brand-name {
+  display: flex;
+  flex-direction: column;
+  font-family: "Arial Black", "Arial Bold", Arial, sans-serif;
+  font-weight: 900;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+.brand-name span:last-child {
+  font-size: 0.85em;
+  letter-spacing: 0.08em;
+}
+.header-link {
+  font-weight: 600; font-size: 0.95rem;
+  text-decoration: none; color: var(--brown);
+}
+.header-link:hover { color: var(--green-dark); text-decoration: underline; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-block;
+  padding: 0.8em 1.4em;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  font: inherit; font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s, border-color 0.15s;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn-primary { background: var(--green); color: #fff; }
+.btn-primary:hover { background: var(--green-dark); }
+.btn-ghost { border-color: var(--green); color: var(--green-dark); background: transparent; }
+.btn-ghost:hover { background: var(--turquoise-tint); }
+.btn-gold { background: var(--gold); color: var(--ink); }
+.btn-gold:hover { background: var(--gold-hover); color: var(--ink); }
+
+/* ---------- Hero ---------- */
+.hero {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 48px 16px 56px;
+}
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.8rem; font-weight: 700;
+  color: var(--gold-text);
+  margin: 0 0 12px;
+}
+.hero h1 { max-width: 16ch; }
+.lede { max-width: 58ch; color: var(--muted); font-size: 1.15rem; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+
+/* ---------- Printables ---------- */
+.printables {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+.printables-row + .printables-row { margin-top: 56px; }
+
+.cards {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.card {
+  position: relative;
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.card-featured { border: 2px solid var(--gold); }
+.card-preview { background: var(--beige); aspect-ratio: 4 / 3; }
+.card-preview img { width: 100%; height: 100%; object-fit: cover; }
+.card-body { padding: 20px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.card-body p { color: var(--muted); margin: 0 0 16px; flex: 1; }
+.card-body .btn { align-self: flex-start; }
+.card-body .file-meta { flex: 0; margin: 8px 0 0; font-size: 0.9rem; }
+.card-soon { background: var(--beige); box-shadow: none; }
+.card-soon .card-body { padding-top: 56px; }
+
+.badge {
+  position: absolute; top: 14px; left: 14px; z-index: 1;
+  background: var(--gold); color: var(--ink);
+  font-size: 0.75rem; font-weight: 700;
+  padding: 4px 10px; border-radius: 999px;
+}
+.badge-soon { background: var(--turquoise); color: var(--ink); }
+
+/* ---------- Featured printable ---------- */
+/* Phones: heading on top, card with image above text */
+.featured-intro { margin-bottom: 24px; }
+.featured-intro p { color: var(--muted); max-width: 40ch; margin: 0; }
+
+/* Tablets: heading centered above a horizontal card (image left, text right) */
+@media (min-width: 700px) {
+  .featured-row { max-width: 720px; margin-inline: auto; }
+  .featured-intro { text-align: center; }
+  .featured-intro p { margin-inline: auto; }
+  .card-wide { flex-direction: row; }
+  .card-wide .card-preview { flex: 0 0 44%; aspect-ratio: 4 / 5; }
+  .card-wide .card-body { padding: 28px 32px; justify-content: center; }
+  .card-wide .card-body p { flex: 0; }
+}
+
+/* Computers: heading on the left, horizontal card on the right */
+@media (min-width: 1000px) {
+  .featured-row {
+    max-width: none;
+    display: grid;
+    grid-template-columns: 240px 680px;
+    justify-content: center;
+    gap: 48px;
+    align-items: center;
+  }
+  .featured-intro { text-align: left; margin-bottom: 0; }
+  .featured-intro p { margin-inline: 0; }
+  .featured-intro h2 { margin-bottom: 12px; }
+}
+
+/* ---------- Newsletter ---------- */
+.newsletter {
+  background: var(--green);
+  color: #fff;
+  padding: 64px 16px;
+}
+.newsletter-inner { max-width: 640px; margin: 0 auto; text-align: center; }
+/* Your green is mid-tone, so only white or cream text passes on it */
+.newsletter h2 { color: #fff; }
+.newsletter p { color: #fff; }
+
+.subscribe-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 24px;
+}
+@media (min-width: 640px) {
+  .subscribe-form { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) auto; align-items: end; }
+  .subscribe-form .form-message { grid-column: 1 / -1; }
+}
+.field { display: flex; flex-direction: column; gap: 6px; text-align: left; }
+.field label { font-weight: 700; font-size: 0.95rem; color: #fff; padding-left: 4px; }
+.field .optional, .field .required { font-weight: 400; color: var(--cream); }
+.subscribe-form input {
+  font: inherit;
+  padding: 0.8em 1em;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background: var(--cream);
+  color: var(--ink);
+  min-width: 0;
+}
+.subscribe-form input[aria-invalid="true"] { border-color: var(--red); border-width: 3px; }
+/* Messages sit in a cream box so your red stays readable on the green band */
+.form-message { min-height: 1.5em; margin: 4px 0 0; font-weight: 700; }
+.form-message.error,
+.form-message.ok {
+  background: var(--cream);
+  border-radius: 10px;
+  padding: 8px 14px;
+}
+.form-message.error { color: var(--red); border-left: 6px solid var(--red); }
+.form-message.ok { color: var(--green-dark); border-left: 6px solid var(--green); }
+.hp { position: absolute; left: -9999px; }
+
+/* ---------- About ---------- */
+.about {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 64px 16px;
+  display: grid;
+  gap: 32px;
+  align-items: center;
+}
+@media (min-width: 760px) {
+  .about { grid-template-columns: 1fr 1.4fr; }
+}
+.about-logo {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  fill: var(--green);
+  justify-self: center;
+}
+.about p { max-width: 58ch; }
+.signature { font-style: italic; color: var(--brown); }
+
+/* ---------- Footer ---------- */
+.site-footer {
+  background: var(--beige);
+  text-align: center;
+  padding: 32px 16px;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+.site-footer p { margin: 4px 0; }
+.tagline {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 1.15rem;
+  color: var(--green-dark);
+}

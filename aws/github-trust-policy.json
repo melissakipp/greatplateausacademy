@@ -10,7 +10,7 @@
       "Condition": {
         "StringEquals": {
           "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
-          "token.actions.githubusercontent.com:sub": "repo:melissakipp/greatplateausacademy:ref:refs/heads/main"
+          "token.actions.githubusercontent.com:sub": "repo:melissakipp@49261904/greatplateausacademy@1413811933:ref:refs/heads/main"
         }
       }
     }

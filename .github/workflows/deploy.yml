@@ -1,0 +1,80 @@
+# Great Plateaus Academy: deploy site to AWS
+# Save this file in your repo at: .github/workflows/deploy.yml
+#
+# What it does: every time you push changes in the site/ folder to the main
+# branch, GitHub uploads the site to S3 and clears the CloudFront cache.
+# No AWS passwords or keys are stored in GitHub. It signs in with OIDC.
+#
+# Repo variables it needs (GitHub repo -> Settings -> Secrets and variables -> Actions -> Variables):
+#   AWS_REGION                  e.g. us-west-2
+#   AWS_DEPLOY_ROLE_ARN         e.g. arn:aws:iam::123456789012:role/gpa-github-deploy
+#   S3_BUCKET                   e.g. greatplateausacademy-site
+#   CLOUDFRONT_DISTRIBUTION_ID  e.g. E1ABCDEF2GHIJ (leave unset until Step 11; the cache step is skipped until then)
+
+name: Deploy site to AWS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch: # adds a "Run workflow" button in the Actions tab
+
+permissions:
+  id-token: write # lets GitHub request a short-lived AWS sign-in token
+  contents: read
+
+concurrency:
+  group: deploy-production # never run two deploys at once
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SITE_DIR: site
+      S3_BUCKET: ${{ vars.S3_BUCKET }}
+      CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
+
+    steps:
+      - name: Check out the site files
+        uses: actions/checkout@v6
+
+      - name: Sign in to AWS (OIDC, no stored keys)
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      # Images, CSS, JS and PDFs: browsers may keep them for 1 day.
+      # --delete removes files from S3 that you deleted from the repo.
+      - name: Upload images, styles, scripts and downloads
+        run: |
+          aws s3 sync "$SITE_DIR" "s3://$S3_BUCKET" \
+            --delete \
+            --exclude "*.html" \
+            --exclude ".DS_Store" \
+            --exclude "*/.DS_Store" \
+            --cache-control "public, max-age=86400"
+
+      # HTML pages: browsers always check for a newer version,
+      # so visitors see your updates right away.
+      - name: Upload HTML pages
+        run: |
+          aws s3 sync "$SITE_DIR" "s3://$S3_BUCKET" \
+            --delete \
+            --exclude "*" \
+            --include "*.html" \
+            --cache-control "no-cache"
+
+      # Tells CloudFront to fetch the fresh files. "/*" counts as one path.
+      - name: Clear the CloudFront cache
+        if: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID != '' }}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "$CLOUDFRONT_DISTRIBUTION_ID" \
+            --paths "/*"
+
+      - name: Summary
+        run: echo "Deployed $SITE_DIR to s3://$S3_BUCKET" >> "$GITHUB_STEP_SUMMARY"

@@ -5,7 +5,7 @@
       "Sid": "ListSiteBucket",
       "Effect": "Allow",
       "Action": "s3:ListBucket",
-      "Resource": "arn:aws:s3:::BUCKET_NAME"
+      "Resource": "arn:aws:s3:::greatplateausacademy"
     },
     {
       "Sid": "UploadAndDeleteSiteFiles",
@@ -15,16 +15,7 @@
         "s3:PutObject",
         "s3:DeleteObject"
       ],
-      "Resource": "arn:aws:s3:::BUCKET_NAME/*"
-    },
-    {
-      "Sid": "ClearCloudFrontCache",
-      "Effect": "Allow",
-      "Action": [
-        "cloudfront:CreateInvalidation",
-        "cloudfront:GetInvalidation"
-      ],
-      "Resource": "arn:aws:cloudfront::ACCOUNT_ID:distribution/DISTRIBUTION_ID"
+      "Resource": "arn:aws:s3:::greatplateausacademy/*"
     }
   ]
 }

@@ -1,6 +1,6 @@
 # Great Plateaus Academy — Website (Oct 2026)
 
-Plain HTML, CSS and JS. No build step.
+Plain HTML, CSS and JS. 
 
 ```
 index.html      home page (this week's printable, coming up, about, newsletter)
@@ -12,9 +12,7 @@ downloads/      the PDFs
 images/         printable previews + og.jpg (1200x630 social preview)
 ```
 
-Links to `styles.css` and `main.js` start with `/`, so every page finds them
-at any address. Open the site through your domain (or a local server), not by
-double-clicking the file.
+![Home page on a computer screen](docs/screenshot-v2.png)
 
 ## Each Wednesday
 
